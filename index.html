@@ -1,40 +1,161 @@
-<!DOCTYPE html>
+          <!DOCTYPE html>
 <html>
 <head>
   <title>99 Nights in the Forest</title>
-    <style>
-        body {
-              font-family: Arial, sans-serif;
-                    background-color: #1a1a1a;
-                          color: #eee;
-                                text-align: center;
-                                      padding: 20px;
-                                          }
-                                              button {
-                                                    margin: 10px;
-                                                          padding: 10px 20px;
-                                                                font-size: 16px;
-                                                                      background-color: #444;
-                                                                            color: white;
-                                                                                  border: none;
-                                                                                        border-radius: 5px;
-                                                                                              cursor: pointer;
-                                                                                                  }
-                                                                                                      #game {
-                                                                                                            margin-top: 20px;
-                                                                                                                }
-                                                                                                                  </style>
-                                                                                                                  </head>
-                                                                                                                  <body>
-                                                                                                                    <h1>🌲 99 Nights in the Forest</h1>
-                                                                                                                      <div id="game">
-                                                                                                                          <p id="status">Night 1 begins...</p>
-                                                                                                                              <p id="playerStats"></p>
-                                                                                                                                  <p id="wolfStats"></p>
-                                                                                                                                      <button onclick="gatherWood()">Gather Wood</button>
-                                                                                                                                          <button onclick="buildShelter()">Build Shelter</button>
-                                                                                                                                              <button onclick="attackWolf()">Attack Wolf</button>
-                                                                                                                                                  <button onclick="nextNight()">Next Night</button>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: #eee;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #game {
+      margin-top: 20px;
+    }
+    #inventory {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌲 99 Nights in the Forest</h1>
+  <div id="game">
+    <p id="status">Night 1 begins...</p>
+    <p id="playerStats"></p>
+    <p id="wolfStats"></p>
+    <div id="inventory"></div>
+    <button onclick="gatherWood()">Gather Wood</button>
+    <button onclick="gatherStone()">Gather Stone</button>
+    <button onclick="craftItem('campfire')">Craft Campfire</button>
+    <button onclick="craftItem('axe')">Craft Axe</button>
+    <button onclick="craftItem('shelter')">Craft Shelter</button>
+    <button onclick="attackWolf()">Attack Wolf</button>
+    <button onclick="nextNight()">Next Night</button>
+  </div>
+
+  <script>
+    let night = 1;
+    let playerHealth = 100;
+    let wolfHealth = 50;
+    let wolfAlive = true;
+
+    let inventory = {
+      wood: 0,
+      stone: 0,
+      campfire: false,
+      axe: false,
+      shelter: false
+    };
+
+    function updateStatus(message) {
+      document.getElementById("status").innerText = message;
+      document.getElementById("playerStats").innerText = `Player Health: ${playerHealth}`;
+      document.getElementById("wolfStats").innerText = wolfAlive ? `🐺 Wolf Health: ${wolfHealth}` : "🐺 The wolf is defeated!";
+      document.getElementById("inventory").innerHTML = `
+        <strong>Inventory:</strong><br>
+        Wood: ${inventory.wood} | Stone: ${inventory.stone}<br>
+        Campfire: ${inventory.campfire ? "✅" : "❌"} | Axe: ${inventory.axe ? "✅" : "❌"} | Shelter: ${inventory.shelter ? "✅" : "❌"}
+      `;
+    }
+
+    function gatherWood() {
+      let amount = Math.floor(Math.random() * 4) + 2;
+      inventory.wood += amount;
+      updateStatus(`You gathered ${amount} wood.`);
+    }
+
+    function gatherStone() {
+      let amount = Math.floor(Math.random() * 3) + 1;
+      inventory.stone += amount;
+      updateStatus(`You gathered ${amount} stone.`);
+    }
+
+    function craftItem(item) {
+      if (item === "campfire" && inventory.wood >= 5) {
+        inventory.wood -= 5;
+        inventory.campfire = true;
+        updateStatus("You crafted a campfire.");
+      } else if (item === "axe" && inventory.wood >= 3 && inventory.stone >= 2) {
+        inventory.wood -= 3;
+        inventory.stone -= 2;
+        inventory.axe = true;
+        updateStatus("You crafted an axe.");
+      } else if (item === "shelter" && inventory.wood >= 10 && inventory.stone >= 5) {
+        inventory.wood -= 10;
+        inventory.stone -= 5;
+        inventory.shelter = true;
+        updateStatus("You built a shelter.");
+      } else {
+        updateStatus("Not enough resources to craft " + item + ".");
+      }
+    }
+
+    function attackWolf() {
+      if (wolfAlive) {
+        let damage = inventory.axe ? Math.floor(Math.random() * 20) + 10 : Math.floor(Math.random() * 10) + 5;
+        wolfHealth -= damage;
+        updateStatus(`You attacked the wolf for ${damage} damage.`);
+        if (wolfHealth <= 0) {
+          wolfAlive = false;
+          updateStatus("You defeated the wolf!");
+        } else {
+          wolfAttack();
+        }
+      } else {
+        updateStatus("The wolf is already defeated.");
+      }
+    }
+
+    function wolfAttack() {
+      let damage = Math.floor(Math.random() * 10) + 5;
+      if (inventory.shelter) damage = Math.floor(damage / 2);
+      playerHealth -= damage;
+      updateStatus(`The wolf attacked you for ${damage} damage!`);
+      if (playerHealth <= 0) {
+        updateStatus("💀 You died. Game over.");
+        disableButtons();
+      }
+    }
+
+    function nextNight() {
+      night++;
+      if (night > 99) {
+        updateStatus("🎉 You survived 99 nights! You win!");
+        disableButtons();
+        return;
+      }
+
+      wolfAlive = Math.random() > 0.4;
+      wolfHealth = wolfAlive ? 50 : 0;
+
+      if (!inventory.shelter && wolfAlive) {
+        wolfAttack();
+        updateStatus(`Night ${night}: A wolf appears!`);
+      } else {
+        updateStatus(`Night ${night}: You survived.`);
+      }
+    }
+
+    function disableButtons() {
+      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
+    }
+
+    updateStatus("Night 1 begins...");
+  </script>
+</body>
+</html>                                                                                                                                        <button onclick="nextNight()">Next Night</button>
                                                                                                                                                     </div>
 
                                                                                                                                                       <script>
