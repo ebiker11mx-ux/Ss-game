@@ -5,16 +5,26 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #1a1a1a;
+      background-image: url('https://copilot.microsoft.com/th/id/BCO.31cf7a24-14e3-4ef6-8bd6-697159c79a5e.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       color: #eee;
       text-align: center;
       padding: 20px;
+    }
+    #game {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 20px;
     }
     button {
       margin: 5px;
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #444;
+      background-color: rgba(50, 50, 50, 0.8);
       color: white;
       border: none;
       border-radius: 5px;
@@ -211,27 +221,7 @@
     }
 
     function disableButtons() {
-      document.querySelectorAll("button").forEach(btn => btn.disabled = true);
-    }
-
-    function createForest() {
-      const forest = document.getElementById("forest");
-      forest.innerHTML = "";
-      for (let i = 0; i < 6; i++) {
-        const tree = document.createElement("                                                                              playerHealth -= damage;
-                                                                                                                                                                                                                                                                                                                                                                                                                                  updateStatus(`The wolf attacked you for ${damage} damage!`);
-                                                                                                                                                                                                                                                                                                                                                                                                                                        if (playerHealth <= 0) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                updateStatus("💀 You died. Game over.");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        disableButtons();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                  }
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                      function nextNight() {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            night++;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if (night > 99) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          updateStatus("🎉 You survived 99 nights! You win!");
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  disableButtons();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          return;
+      document.query                                                                                                                                                                                                                                                                                                                                                                       return;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 }
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       wolfAlive = Math.random() > 0.5;
