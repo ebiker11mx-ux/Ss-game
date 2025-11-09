@@ -1,4 +1,4 @@
-          <!DOCTYPE html>
+        <!DOCTYPE html>
 <html>
 <head>
   <title>99 Nights in the Forest</title>
@@ -20,8 +20,29 @@
       border-radius: 5px;
       cursor: pointer;
     }
-    #game {
+    #forest {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
       margin-top: 20px;
+    }
+    .tree {
+      width: 60px;
+      height: 100px;
+      background-color: green;
+      margin: 10px;
+      border-radius: 10px 10px 0 0;
+      position: relative;
+      cursor: pointer;
+    }
+    .tree::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 20px;
+      width: 20px;
+      height: 20px;
+      background-color: brown;
     }
     #inventory {
       margin-top: 10px;
@@ -36,13 +57,13 @@
     <p id="playerStats"></p>
     <p id="wolfStats"></p>
     <div id="inventory"></div>
-    <button onclick="gatherWood()">Gather Wood</button>
     <button onclick="gatherStone()">Gather Stone</button>
     <button onclick="craftItem('campfire')">Craft Campfire</button>
     <button onclick="craftItem('axe')">Craft Axe</button>
     <button onclick="craftItem('shelter')">Craft Shelter</button>
     <button onclick="attackWolf()">Attack Wolf</button>
     <button onclick="nextNight()">Next Night</button>
+    <div id="forest"></div>
   </div>
 
   <script>
@@ -68,12 +89,6 @@
         Wood: ${inventory.wood} | Stone: ${inventory.stone}<br>
         Campfire: ${inventory.campfire ? "✅" : "❌"} | Axe: ${inventory.axe ? "✅" : "❌"} | Shelter: ${inventory.shelter ? "✅" : "❌"}
       `;
-    }
-
-    function gatherWood() {
-      let amount = Math.floor(Math.random() * 4) + 2;
-      inventory.wood += amount;
-      updateStatus(`You gathered ${amount} wood.`);
     }
 
     function gatherStone() {
@@ -152,37 +167,27 @@
       document.querySelectorAll("button").forEach(btn => btn.disabled = true);
     }
 
+    function createForest() {
+      const forest = document.getElementById("forest");
+      forest.innerHTML = "";
+      for (let i = 0; i < 6; i++) {
+        const tree = document.createElement("div");
+        tree.className = "tree";
+        tree.onclick = () => {
+          let amount = Math.floor(Math.random() * 3) + 1;
+          inventory.wood += amount;
+          updateStatus(`You chopped a tree and got ${amount} wood.`);
+          tree.style.visibility = "hidden";
+        };
+        forest.appendChild(tree);
+      }
+    }
+
+    createForest();
     updateStatus("Night 1 begins...");
   </script>
 </body>
-</html>                                                                                                                                        <button onclick="nextNight()">Next Night</button>
-                                                                                                                                                    </div>
-
-                                                                                                                                                      <script>
-                                                                                                                                                          let night = 1;
-                                                                                                                                                              let wood = 0;
-                                                                                                                                                                  let shelterBuilt = false;
-                                                                                                                                                                      let playerHealth = 100;
-                                                                                                                                                                          let wolfHealth = 50;
-                                                                                                                                                                              let wolfAlive = true;
-
-                                                                                                                                                                                  function updateStatus(message) {
-                                                                                                                                                                                        document.getElementById("status").innerText = message;
-                                                                                                                                                                                              document.getElementById("playerStats").innerText = `Player Health: ${playerHealth} | Wood: ${wood}`;
-                                                                                                                                                                                                    document.getElementById("wolfStats").innerText = wolfAlive ? `🐺 Wolf Health: ${wolfHealth}` : "🐺 The wolf is defeated!";
-                                                                                                                                                                                                        }
-
-                                                                                                                                                                                                            function gatherWood() {
-                                                                                                                                                                                                                  let amount = Math.floor(Math.random() * 5) + 1;
-                                                                                                                                                                                                                        wood += amount;
-                                                                                                                                                                                                                              updateStatus(`You gathered ${amount} wood.`);
-                                                                                                                                                                                                                                  }
-
-                                                                                                                                                                                                                                      function buildShelter() {
-                                                                                                                                                                                                                                            if (wood >= 10 && !shelterBuilt) {
-                                                                                                                                                                                                                                                    wood -= 10;
-                                                                                                                                                                                                                                                            shelterBuilt = true;
-                                                                                                                                                                                                                                                                    updateStatus("You built a shelter! You're safer now.");
+</html>                                                                updateStatus("You built a shelter! You're safer now.");
                                                                                                                                                                                                                                                                           } else {
                                                                                                                                                                                                                                                                                   updateStatus("Not enough wood or shelter already built.");
                                                                                                                                                                                                                                                                                         }
