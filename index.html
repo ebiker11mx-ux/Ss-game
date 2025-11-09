@@ -1,4 +1,4 @@
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <title>99 Nights in the Forest</title>
@@ -61,6 +61,8 @@
     <button onclick="craftItem('campfire')">Craft Campfire</button>
     <button onclick="craftItem('axe')">Craft Axe</button>
     <button onclick="craftItem('shelter')">Craft Shelter</button>
+    <button onclick="eatFood('berries')">Eat Berries</button>
+    <button onclick="eatFood('meat')">Eat Meat</button>
     <button onclick="attackWolf()">Attack Wolf</button>
     <button onclick="nextNight()">Next Night</button>
     <div id="forest"></div>
@@ -69,12 +71,15 @@
   <script>
     let night = 1;
     let playerHealth = 100;
+    let hunger = 100;
     let wolfHealth = 50;
     let wolfAlive = true;
 
     let inventory = {
       wood: 0,
       stone: 0,
+      berries: 0,
+      meat: 0,
       campfire: false,
       axe: false,
       shelter: false
@@ -82,11 +87,12 @@
 
     function updateStatus(message) {
       document.getElementById("status").innerText = message;
-      document.getElementById("playerStats").innerText = `Player Health: ${playerHealth}`;
+      document.getElementById("playerStats").innerText = `Health: ${playerHealth} | Hunger: ${hunger}`;
       document.getElementById("wolfStats").innerText = wolfAlive ? `🐺 Wolf Health: ${wolfHealth}` : "🐺 The wolf is defeated!";
       document.getElementById("inventory").innerHTML = `
         <strong>Inventory:</strong><br>
         Wood: ${inventory.wood} | Stone: ${inventory.stone}<br>
+        Berries: ${inventory.berries} | Meat: ${inventory.meat}<br>
         Campfire: ${inventory.campfire ? "✅" : "❌"} | Axe: ${inventory.axe ? "✅" : "❌"} | Shelter: ${inventory.shelter ? "✅" : "❌"}
       `;
     }
@@ -117,6 +123,22 @@
       }
     }
 
+    function eatFood(type) {
+      if (type === "berries" && inventory.berries > 0) {
+        inventory.berries--;
+        hunger += 15;
+        hunger = Math.min(hunger, 100);
+        updateStatus("You ate berries. Hunger restored.");
+      } else if (type === "meat" && inventory.meat > 0) {
+        inventory.meat--;
+        hunger += 30;
+        hunger = Math.min(hunger, 100);
+        updateStatus("You ate meat. Hunger restored.");
+      } else {
+        updateStatus("You don't have any " + type + " to eat.");
+      }
+    }
+
     function attackWolf() {
       if (wolfAlive) {
         let damage = inventory.axe ? Math.floor(Math.random() * 20) + 10 : Math.floor(Math.random() * 10) + 5;
@@ -124,7 +146,8 @@
         updateStatus(`You attacked the wolf for ${damage} damage.`);
         if (wolfHealth <= 0) {
           wolfAlive = false;
-          updateStatus("You defeated the wolf!");
+          inventory.meat += 1;
+          updateStatus("You defeated the wolf and got meat!");
         } else {
           wolfAttack();
         }
@@ -146,6 +169,13 @@
 
     function nextNight() {
       night++;
+      hunger -= 20;
+      if (hunger <= 0) {
+        hunger = 0;
+        playerHealth -= 15;
+        updateStatus("You are starving! Health drops.");
+      }
+
       if (night > 99) {
         updateStatus("🎉 You survived 99 nights! You win!");
         disableButtons();
@@ -154,13 +184,8 @@
 
       wolfAlive = Math.random() > 0.4;
       wolfHealth = wolfAlive ? 50 : 0;
-
-      if (!inventory.shelter && wolfAlive) {
-        wolfAttack();
-        updateStatus(`Night ${night}: A wolf appears!`);
-      } else {
-        updateStatus(`Night ${night}: You survived.`);
-      }
+      createForest();
+      updateStatus(`Night ${night} begins...`);
     }
 
     function disableButtons() {
@@ -174,9 +199,14 @@
         const tree = document.createElement("div");
         tree.className = "tree";
         tree.onclick = () => {
-          let amount = Math.floor(Math.random() * 3) + 1;
-          inventory.wood += amount;
-          updateStatus(`You chopped a tree and got ${amount} wood.`);
+          let woodAmount = Math.floor(Math.random() * 3) + 1;
+          inventory.wood += woodAmount;
+          if (Math.random() > 0.6) {
+            inventory.berries += 1;
+            updateStatus(`You chopped a tree: +${woodAmount} wood, +1 berries.`);
+          } else {
+            updateStatus(`You chopped a tree: +${woodAmount} wood.`);
+          }
           tree.style.visibility = "hidden";
         };
         forest.appendChild(tree);
@@ -187,22 +217,7 @@
     updateStatus("Night 1 begins...");
   </script>
 </body>
-</html>                                                                updateStatus("You built a shelter! You're safer now.");
-                                                                                                                                                                                                                                                                          } else {
-                                                                                                                                                                                                                                                                                  updateStatus("Not enough wood or shelter already built.");
-                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                            }
-
-                                                                                                                                                                                                                                                                                                function attackWolf() {
-                                                                                                                                                                                                                                                                                                      if (wolfAlive) {
-                                                                                                                                                                                                                                                                                                              let damage = Math.floor(Math.random() * 15) + 5;
-                                                                                                                                                                                                                                                                                                                      wolfHealth -= damage;
-                                                                                                                                                                                                                                                                                                                              updateStatus(`You attacked the wolf for ${damage} damage.`);
-                                                                                                                                                                                                                                                                                                                                      if (wolfHealth <= 0) {
-                                                                                                                                                                                                                                                                                                                                                wolfAlive = false;
-                                                                                                                                                                                                                                                                                                                                                          updateStatus("You defeated the wolf!");
-                                                                                                                                                                                                                                                                                                                                                                  } else {
-                                                                                                                                                                                                                                                                                                                                                                            wolfAttack();
+</html>                                                                                                                                                                                                                                                                               wolfAttack();
                                                                                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                                                                                           } else {
                                                                                                                                                                                                                                                                                                                                                                                                   updateStatus("The wolf is already defeated.");
