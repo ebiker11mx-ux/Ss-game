@@ -1,227 +1,193 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>99 Nights in the Forest</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ethan & Angi — Our Year</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-image: url('https://copilot.microsoft.com/th/id/BCO.31cf7a24-14e3-4ef6-8bd6-697159c79a5e.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: #eee;
-      text-align: center;
-      padding: 20px;
+    :root {
+      --bg: #0f1216;
+      --card: #171b21;
+      --text: #eef2f7;
+      --muted: #a8b0bd;
+      --accent: #ff7aa2;
+      --accent2: #7ad0ff;
+      --radius: 14px;
     }
-    #game {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      display: inline-block;
-      margin-top: 20px;
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: radial-gradient(1200px circle at 10% 10%, #111522 0%, #0c0f14 60%, #080a0d 100%);
+      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-    button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: rgba(50, 50, 50, 0.8);
-      color: white;
-      border: none;
-      border-radius: 5px;
+    .site-header { padding: 24px 16px; text-align: center; }
+    .site-header h1 { margin: 8px 0; font-weight: 800; }
+    .site-header p { margin: 0; color: var(--muted); }
+    .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .month-card {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      background: linear-gradient(160deg, var(--card), #12161c);
+      border: 1px solid #222932;
+      border-radius: var(--radius);
+      padding: 18px;
+      text-decoration: none;
+      color: var(--text);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
     }
-    #forest {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-    .tree {
-      width: 60px;
+    .month-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.45); }
+    .month-thumb {
+      display: grid; place-items: center;
       height: 100px;
-      background-color: green;
-      margin: 10px;
-      border-radius: 10px 10px 0 0;
-      position: relative;
+      background: linear-gradient(135deg, rgba(255,122,162,0.15), rgba(122,208,255,0.15));
+      border-radius: 10px;
+      font-size: 36px; font-weight: 800;
+    }
+    .month-name { margin-top: 12px; color: var(--muted); font-weight: 600; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .gallery-grid img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      border-radius: 12px; border: 1px solid #232a34;
       cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .tree::after {
-      content: "";
-      position: absolute;
-      bottom: -20px;
-      left: 20px;
-      width: 20px;
-      height: 20px;
-      background-color: brown;
+    .gallery-grid img:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
+    .lightbox {
+      position: fixed; inset: 0;
+      background: rgba(5,7,10,0.9);
+      display: none; align-items: center; justify-content: center; flex-direction: column;
+      padding: 24px; z-index: 999;
     }
-    #inventory {
-      margin-top: 10px;
-      font-size: 14px;
+    .lightbox.show { display: flex; }
+    .lightbox img {
+      max-width: min(100%, 980px); max-height: 80vh;
+      border-radius: 12px; border: 1px solid #232a34;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .lightbox-close {
+      position: absolute; top: 18px; right: 18px;
+      background: var(--card); color: var(--text);
+      border: 1px solid #232a34; border-radius: 10px;
+      padding: 8px 12px; font-size: 22px; cursor: pointer;
+    }
+    .lightbox-nav { margin-top: 12px; display: flex; gap: 12px; }
+    .lightbox-nav button {
+      background: linear-gradient(160deg, var(--card), #12161c);
+      color: var(--text); border: 1px solid #232a34;
+      border-radius: 10px; padding: 8px 14px; cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>🌲 99 Nights in the Forest</h1>
-  <div id="game">
-    <p id="status">Night 1 begins...</p>
-    <p id="playerStats"></p>
-    <p id="wolfStats"></p>
-    <div id="inventory"></div>
-    <button onclick="gatherStone()">Gather Stone</button>
-    <button onclick="craftItem('campfire')">Craft Campfire</button>
-    <button onclick="craftItem('axe')">Craft Axe</button>
-    <button onclick="craftItem('shelter')">Craft Shelter</button>
-    <button onclick="craftItem('workbench')">Craft Workbench</button>
-    <button onclick="craftItem('compass')">Craft Compass</button>
-    <button onclick="craftItem('potion')">Craft Healing Potion</button>
-    <button onclick="eatFood('berries')">Eat Berries</button>
-    <button onclick="eatFood('meat')">Eat Meat</button>
-    <button onclick="attackWolf()">Attack Wolf</button>
-    <button onclick="nextNight()">Next Night</button>
-    <div id="forest"></div>
+  <header class="site-header">
+    <h1>Ethan & Angi</h1>
+    <p>Our moments, month by month</p>
+  </header>
+
+  <main class="container">
+    <section class="month-grid" id="monthGrid"></section>
+    <div id="gallery" class="gallery-grid"></div>
+  </main>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close">×</button>
+    <img id="lightboxImg" alt="Photo" />
+    <div class="lightbox-nav">
+      <button id="prevBtn">◀</button>
+      <button id="nextBtn">▶</button>
+    </div>
   </div>
 
   <script>
-    let night = 1;
-    let playerHealth = 100;
-    let hunger = 100;
-    let wolfHealth = 50;
-    let wolfAlive = true;
+    const MONTHS = [
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    ];
+    const monthGrid = document.getElementById("monthGrid");
+    const gallery = document.getElementById("gallery");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const closeBtn = document.querySelector(".lightbox-close");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    let currentList = [], currentIndex = 0;
 
-    let inventory = {
-      wood: 0,
-      stone: 0,
-      berries: 0,
-      meat: 0,
-      crystal: 0,
-      campfire: false,
-      axe: false,
-      shelter: false,
-      workbench: false,
-      compass: false,
-      potion: 0
-    };
+    // Build month cards
+    MONTHS.forEach((name, i) => {
+      const card = document.createElement("div");
+      card.className = "month-card";
+      card.innerHTML = `<div class="month-thumb">${String(i+1).padStart(2,"0")}</div>
+                        <div class="month-name">${name}</div>`;
+      card.addEventListener("click", () => loadMonth(i+1, name));
+      monthGrid.appendChild(card);
+    });
 
-    function updateStatus(message) {
-      document.getElementById("status").innerText = message;
-      document.getElementById("playerStats").innerText = `Health: ${playerHealth} | Hunger: ${hunger}`;
-      document.getElementById("wolfStats").innerText = wolfAlive ? `🐺 Wolf Health: ${wolfHealth}` : "🐺 The wolf is defeated!";
-      document.getElementById("inventory").innerHTML = `
-        <strong>Inventory:</strong><br>
-        Wood: ${inventory.wood} | Stone: ${inventory.stone} | Crystal: ${inventory.crystal}<br>
-        Berries: ${inventory.berries} | Meat: ${inventory.meat} | Potions: ${inventory.potion}<br>
-        Campfire: ${inventory.campfire ? "✅" : "❌"} | Axe: ${inventory.axe ? "✅" : "❌"} | Shelter: ${inventory.shelter ? "✅" : "❌"} | Workbench: ${inventory.workbench ? "✅" : "❌"} | Compass: ${inventory.compass ? "✅" : "❌"}
-      `;
-    }
-
-    function gatherStone() {
-      let amount = Math.floor(Math.random() * 3) + 1;
-      inventory.stone += amount;
-      updateStatus(`You gathered ${amount} stone.`);
-    }
-
-    function craftItem(item) {
-      if (item === "campfire" && inventory.wood >= 5) {
-        inventory.wood -= 5;
-        inventory.campfire = true;
-        updateStatus("You crafted a campfire.");
-      } else if (item === "axe" && inventory.wood >= 3 && inventory.stone >= 2) {
-        inventory.wood -= 3;
-        inventory.stone -= 2;
-        inventory.axe = true;
-        updateStatus("You crafted an axe.");
-      } else if (item === "shelter" && inventory.wood >= 10 && inventory.stone >= 5) {
-        inventory.wood -= 10;
-        inventory.stone -= 5;
-        inventory.shelter = true;
-        updateStatus("You built a shelter.");
-      } else if (item === "workbench" && inventory.wood >= 8 && inventory.stone >= 4) {
-        inventory.wood -= 8;
-        inventory.stone -= 4;
-        inventory.workbench = true;
-        updateStatus("You built a workbench.");
-      } else if (item === "compass" && inventory.workbench && inventory.stone >= 2 && inventory.crystal >= 1) {
-        inventory.stone -= 2;
-        inventory.crystal -= 1;
-        inventory.compass = true;
-        updateStatus("You crafted a compass.");
-      } else if (item === "potion" && inventory.workbench && inventory.berries >= 1 && inventory.crystal >= 1) {
-        inventory.berries -= 1;
-        inventory.crystal -= 1;
-        inventory.potion += 1;
-        updateStatus("You brewed a healing potion.");
-      } else {
-        updateStatus("Not enough resources or missing workbench.");
+    function loadMonth(num, name) {
+      gallery.innerHTML = "";
+      const maxPhotos = 20;
+      const list = [];
+      for (let i=1; i<=maxPhotos; i++) {
+        list.push(`albums/${String(num).padStart(2,"0")}_${name}/photo${i}.jpg`);
       }
+      currentList = [];
+      let loaded = 0;
+      list.forEach(src => {
+        const img = new Image();
+        img.onload = () => {
+          currentList.push(src);
+          loaded++;
+          if (loaded===list.length) renderGallery(name);
+        };
+        img.onerror = () => {
+          loaded++;
+          if (loaded===list.length) renderGallery(name);
+        };
+        img.src = src;
+      });
     }
 
-    function eatFood(type) {
-      if (type === "berries" && inventory.berries > 0) {
-        inventory.berries--;
-        hunger += 15;
-        hunger = Math.min(hunger, 100);
-        updateStatus("You ate berries. Hunger restored.");
-      } else if (type === "meat" && inventory.meat > 0) {
-        inventory.meat--;
-        hunger += 30;
-        hunger = Math.min(hunger, 100);
-        updateStatus("You ate meat. Hunger restored.");
-      } else {
-        updateStatus("You don't have any " + type + " to eat.");
-      }
-    }
-
-    function attackWolf() {
-      if (wolfAlive) {
-        let damage = inventory.axe ? Math.floor(Math.random() * 20) + 10 : Math.floor(Math.random() * 10) + 5;
-        wolfHealth -= damage;
-        updateStatus(`You attacked the wolf for ${damage} damage.`);
-        if (wolfHealth <= 0) {
-          wolfAlive = false;
-          inventory.meat += 1;
-          updateStatus("You defeated the wolf and got meat!");
-        } else {
-          wolfAttack();
-        }
-      } else {
-        updateStatus("The wolf is already defeated.");
-      }
-    }
-
-    function wolfAttack() {
-      let damage = Math.floor(Math.random() * 10) + 5;
-      if (inventory.shelter) damage = Math.floor(damage / 2);
-      playerHealth -= damage;
-      updateStatus(`The wolf attacked you for ${damage} damage!`);
-      if (playerHealth <= 0) {
-        updateStatus("💀 You died. Game over.");
-        disableButtons();
-      }
-    }
-
-    function nextNight() {
-      night++;
-      hunger -= 20;
-      if (hunger <= 0) {
-        hunger = 0;
-        playerHealth -= 15;
-        updateStatus("You are starving! Health drops.");
-      }
-
-      if (night > 99) {
-        updateStatus("🎉 You survived 99 nights! You win!");
-        disableButtons();
+    function renderGallery(name) {
+      gallery.innerHTML = "";
+      if (currentList.length===0) {
+        gallery.innerHTML = `<p style="color:#a8b0bd">No photos yet for ${name}.</p>`;
         return;
       }
-
-      wolfAlive = Math.random() > 0.4;
-      wolfHealth = wolfAlive ? 50 : 0;
-      createForest();
-      updateStatus(`Night ${night} begins...`);
+      currentList.forEach((src, idx) => {
+        const imgEl = document.createElement("img");
+        imgEl.src = src;
+        imgEl.alt = `${name} photo ${idx+1}`;
+        imgEl.addEventListener("click", () => openLightbox(idx));
+        gallery.appendChild(imgEl);
+      });
     }
 
-    function disableButtons() {
-      document.query                                                                                                                                                                                                                                                                                                                                                                       return;
+    function openLightbox(index) {
+      currentIndex = index;
+      updateLightboxImage();
+      lightbox.classList.add("show");
+    }
+    function closeLightbox() { lightbox.classList.remove("show"); }
+    function updateLightboxImage() { lightboxImg.src = currentList[currentIndex]; }
+    function prevPhoto() { currentIndex=(currentIndex-1+currentList.length)%currentList.length; updateLightboxImage(); }
+    function nextPhoto() { currentIndex=(currentIndex+1)%currentList.length; updateLightboxImage(); }
+
+    closeBtn.addEventListener("click", closeLightbox);
+    prevBtn.addEventListener("click", prevPhoto);
+    nextBtn.addEventListener("click", nextPhoto);
+    window                                                                                                                                                                                                                                                                                                                                                                       return;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 }
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       wolfAlive = Math.random() > 0.5;
