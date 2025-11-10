@@ -41,7 +41,6 @@
       color: var(--text);
       box-shadow: 0 10px 30px rgba(0,0,0,0.35);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
     }
     .month-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.45); }
     .month-thumb {
@@ -52,43 +51,7 @@
       font-size: 36px; font-weight: 800;
     }
     .month-name { margin-top: 12px; color: var(--muted); font-weight: 600; }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 12px;
-      margin-top: 24px;
-    }
-    .gallery-grid img {
-      width: 100%; aspect-ratio: 4/3; object-fit: cover;
-      border-radius: 12px; border: 1px solid #232a34;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .gallery-grid img:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.35); }
-    .lightbox {
-      position: fixed; inset: 0;
-      background: rgba(5,7,10,0.9);
-      display: none; align-items: center; justify-content: center; flex-direction: column;
-      padding: 24px; z-index: 999;
-    }
-    .lightbox.show { display: flex; }
-    .lightbox img {
-      max-width: min(100%, 980px); max-height: 80vh;
-      border-radius: 12px; border: 1px solid #232a34;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    }
-    .lightbox-close {
-      position: absolute; top: 18px; right: 18px;
-      background: var(--card); color: var(--text);
-      border: 1px solid #232a34; border-radius: 10px;
-      padding: 8px 12px; font-size: 22px; cursor: pointer;
-    }
-    .lightbox-nav { margin-top: 12px; display: flex; gap: 12px; }
-    .lightbox-nav button {
-      background: linear-gradient(160deg, var(--card), #12161c);
-      color: var(--text); border: 1px solid #232a34;
-      border-radius: 10px; padding: 8px 14px; cursor: pointer;
-    }
+    .site-footer { text-align: center; color: var(--muted); padding: 24px 16px 40px; }
   </style>
 </head>
 <body>
@@ -98,96 +61,66 @@
   </header>
 
   <main class="container">
-    <section class="month-grid" id="monthGrid"></section>
-    <div id="gallery" class="gallery-grid"></div>
+    <section class="month-grid">
+      <!-- Month 1 with your Google Drive link -->
+      <a class="month-card" href="https://drive.google.com/drive/folders/14Z6IdrOS0FaQ-mXmJg4FllWJBUmp6rx0" target="_blank">
+        <div class="month-thumb">01</div>
+        <div class="month-name">January</div>
+      </a>
+
+      <!-- Replace these placeholders with your actual links -->
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_FEBRUARY" target="_blank">
+        <div class="month-thumb">02</div>
+        <div class="month-name">February</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_MARCH" target="_blank">
+        <div class="month-thumb">03</div>
+        <div class="month-name">March</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_APRIL" target="_blank">
+        <div class="month-thumb">04</div>
+        <div class="month-name">April</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_MAY" target="_blank">
+        <div class="month-thumb">05</div>
+        <div class="month-name">May</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_JUNE" target="_blank">
+        <div class="month-thumb">06</div>
+        <div class="month-name">June</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_JULY" target="_blank">
+        <div class="month-thumb">07</div>
+        <div class="month-name">July</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_AUGUST" target="_blank">
+        <div class="month-thumb">08</div>
+        <div class="month-name">August</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_SEPTEMBER" target="_blank">
+        <div class="month-thumb">09</div>
+        <div class="month-name">September</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_OCTOBER" target="_blank">
+        <div class="month-thumb">10</div>
+        <div class="month-name">October</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_NOVEMBER" target="_blank">
+        <div class="month-thumb">11</div>
+        <div class="month-name">November</div>
+      </a>
+      <a class="month-card" href="https://drive.google.com/drive/folders/YOUR_LINK_FOR_DECEMBER" target="_blank">
+        <div class="month-thumb">12</div>
+        <div class="month-name">December</div>
+      </a>
+    </section>
   </main>
 
-  <div id="lightbox" class="lightbox" aria-hidden="true">
-    <button class="lightbox-close">×</button>
-    <img id="lightboxImg" alt="Photo" />
-    <div class="lightbox-nav">
-      <button id="prevBtn">◀</button>
-      <button id="nextBtn">▶</button>
-    </div>
-  </div>
-
-  <script>
-    const MONTHS = [
-      "January","February","March","April","May","June",
-      "July","August","September","October","November","December"
-    ];
-    const monthGrid = document.getElementById("monthGrid");
-    const gallery = document.getElementById("gallery");
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightboxImg");
-    const closeBtn = document.querySelector(".lightbox-close");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    let currentList = [], currentIndex = 0;
-
-    // Build month cards
-    MONTHS.forEach((name, i) => {
-      const card = document.createElement("div");
-      card.className = "month-card";
-      card.innerHTML = `<div class="month-thumb">${String(i+1).padStart(2,"0")}</div>
-                        <div class="month-name">${name}</div>`;
-      card.addEventListener("click", () => loadMonth(i+1, name));
-      monthGrid.appendChild(card);
-    });
-
-    function loadMonth(num, name) {
-      gallery.innerHTML = "";
-      const maxPhotos = 20;
-      const list = [];
-      for (let i=1; i<=maxPhotos; i++) {
-        list.push(`albums/${String(num).padStart(2,"0")}_${name}/photo${i}.jpg`);
-      }
-      currentList = [];
-      let loaded = 0;
-      list.forEach(src => {
-        const img = new Image();
-        img.onload = () => {
-          currentList.push(src);
-          loaded++;
-          if (loaded===list.length) renderGallery(name);
-        };
-        img.onerror = () => {
-          loaded++;
-          if (loaded===list.length) renderGallery(name);
-        };
-        img.src = src;
-      });
-    }
-
-    function renderGallery(name) {
-      gallery.innerHTML = "";
-      if (currentList.length===0) {
-        gallery.innerHTML = `<p style="color:#a8b0bd">No photos yet for ${name}.</p>`;
-        return;
-      }
-      currentList.forEach((src, idx) => {
-        const imgEl = document.createElement("img");
-        imgEl.src = src;
-        imgEl.alt = `${name} photo ${idx+1}`;
-        imgEl.addEventListener("click", () => openLightbox(idx));
-        gallery.appendChild(imgEl);
-      });
-    }
-
-    function openLightbox(index) {
-      currentIndex = index;
-      updateLightboxImage();
-      lightbox.classList.add("show");
-    }
-    function closeLightbox() { lightbox.classList.remove("show"); }
-    function updateLightboxImage() { lightboxImg.src = currentList[currentIndex]; }
-    function prevPhoto() { currentIndex=(currentIndex-1+currentList.length)%currentList.length; updateLightboxImage(); }
-    function nextPhoto() { currentIndex=(currentIndex+1)%currentList.length; updateLightboxImage(); }
-
-    closeBtn.addEventListener("click", closeLightbox);
-    prevBtn.addEventListener("click", prevPhoto);
-    nextBtn.addEventListener("click", nextPhoto);
-    window                                                                                                                                                                                                                                                                                                                                                                       return;
+  <footer class="site-footer">
+    <p>Made with love — Ethan & Angi</p>
+  </footer>
+</body>
+</html>                                                                                                                                                                                                                                                                                                                                                                       return;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 }
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       wolfAlive = Math.random() > 0.5;
