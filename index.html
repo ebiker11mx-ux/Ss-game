@@ -25,17 +25,25 @@
     .site-header h1 { margin: 8px 0; font-weight: 800; }
     .site-header p { margin: 0; color: var(--muted); }
     .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
-    h2.section-title {
-      margin-top: 40px;
-      font-size: 24px;
+    details {
+      background: var(--card);
+      border-radius: var(--radius);
+      margin: 20px 0;
+      padding: 16px;
+      border: 1px solid #222932;
+    }
+    summary {
+      font-size: 20px;
+      font-weight: 700;
       color: var(--accent2);
-      text-align: center;
+      cursor: pointer;
+      outline: none;
     }
     .month-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
       gap: 16px;
-      margin-bottom: 40px;
+      margin-top: 16px;
     }
     .month-card {
       display: grid;
@@ -68,26 +76,29 @@
   </header>
 
   <main class="container">
-    <h2 class="section-title">2025 Photos</h2>
-    <section class="month-grid">
-      <a class="month-card" href="https://drive.google.com/drive/folders/14Z6IdrOS0FaQ-mXmJg4FllWJBUmp6rx0" target="_blank"><div class="month-thumb">01</div><div class="month-name">January</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1RXJqrWrTJ_hAJnbIXxMoC6YyQx7zKmUu" target="_blank"><div class="month-thumb">02</div><div class="month-name">February</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1U85W5nofVEMVtyaqf71Cfeck0_oDxXqK" target="_blank"><div class="month-thumb">03</div><div class="month-name">March</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1Cfu5G0FtJ-bnUNgeEZOFOxIj6lUWqs_r" target="_blank"><div class="month-thumb">04</div><div class="month-name">April</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1WsbpBvfBhwTsClPXEV8Oabl8i_Jt1Yp1" target="_blank"><div class="month-thumb">05</div><div class="month-name">May</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1VxcmUt8cw_lEFrIFS5AfZytC_k0_LsHT" target="_blank"><div class="month-thumb">06</div><div class="month-name">June</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1KUxdoj_AW-5LL0wcNcEcdIeEvNhYxBit" target="_blank"><div class="month-thumb">07</div><div class="month-name">July</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1mXWfVIbRCPltLP688CMOfTmF6uw2mB5-" target="_blank"><div class="month-thumb">08</div><div class="month-name">August</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1prb_sKupZFqhW7s1Wdn-VPmIEKcXOYXI" target="_blank"><div class="month-thumb">09</div><div class="month-name">September</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1rVmM6qNK6B913k0sWg9gVlE6WqNKAlsF" target="_blank"><div class="month-thumb">10</div><div class="month-name">October</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1kvJsIyf_bEH8tuwOugFKKsNuYtc61k7M" target="_blank"><div class="month-thumb">11</div><div class="month-name">November</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1Olgzs19WmnE0QzhzP9Wv0nAUer_OFRdS" target="_blank"><div class="month-thumb">12</div><div class="month-name">December</div></a>
-    </section>
+    <details open>
+      <summary>📁 2025 Photos</summary>
+      <section class="month-grid">
+        <a class="month-card" href="https://drive.google.com/drive/folders/14Z6IdrOS0FaQ-mXmJg4FllWJBUmp6rx0" target="_blank"><div class="month-thumb">01</div><div class="month-name">January</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1RXJqrWrTJ_hAJnbIXxMoC6YyQx7zKmUu" target="_blank"><div class="month-thumb">02</div><div class="month-name">February</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1U85W5nofVEMVtyaqf71Cfeck0_oDxXqK" target="_blank"><div class="month-thumb">03</div><div class="month-name">March</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1Cfu5G0FtJ-bnUNgeEZOFOxIj6lUWqs_r" target="_blank"><div class="month-thumb">04</div><div class="month-name">April</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1WsbpBvfBhwTsClPXEV8Oabl8i_Jt1Yp1" target="_blank"><div class="month-thumb">05</div><div class="month-name">May</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1VxcmUt8cw_lEFrIFS5AfZytC_k0_LsHT" target="_blank"><div class="month-thumb">06</div><div class="month-name">June</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1KUxdoj_AW-5LL0wcNcEcdIeEvNhYxBit" target="_blank"><div class="month-thumb">07</div><div class="month-name">July</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1mXWfVIbRCPltLP688CMOfTmF6uw2mB5-" target="_blank"><div class="month-thumb">08</div><div class="month-name">August</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1prb_sKupZFqhW7s1Wdn-VPmIEKcXOYXI" target="_blank"><div class="month-thumb">09</div><div class="month-name">September</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1rVmM6qNK6B913k0sWg9gVlE6WqNKAlsF" target="_blank"><div class="month-thumb">10</div><div class="month-name">October</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1kvJsIyf_bEH8tuwOugFKKsNuYtc61k7M" target="_blank"><div class="month-thumb">11</div><div class="month-name">November</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1Olgzs19WmnE0QzhzP9Wv0nAUer_OFRdS" target="_blank"><div class="month-thumb">12</div><div class="month-name">December</div></a>
+      </section>
+    </details>
 
-    <h2 class="section-title">2026 Photos</h2>
-    <section class="month-grid">
-      <a class="month-card" href="https://drive.google.com/drive/folders/1baAxaMddQYz16wGn8QpbI2ZLC1-vihjr" target="_blank"><div class="month-thumb">01</div><div class="month-name">January</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1nPME6VQyXgvfQ0gO7pE4fzC2Aw4iGCRG" target="_blank"><div class="month-thumb">02</div><div class="month-name">February</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/16hcJU9FqqdTeAm5VVpcr8CxLZnpx0pu7" target="_blank"><div class="month-thumb">03</div><div class="month-name">March</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/1HmpnZG3bYJ_IP_2bmIRqNsgemg-MJaUd" target="_blank"><div class="month-thumb">04</div><div class="month-name">April</div></a>
-      <a class="month-card" href="https://drive.google.com/drive/folders/10qOCUsxl765guvE4XkGsBryco_if_evB" target="_blank"><
+    <details>
+      <summary>📁 2026 Photos</summary>
+      <section class="month-grid">
+        <a class="month-card" href="https://drive.google.com/drive/folders/1baAxaMddQYz16wGn8QpbI2ZLC1-vihjr" target="_blank"><div class="month-thumb">01</div><div class="month-name">January</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1nPME6VQyXgvfQ0gO7pE4fzC2Aw4iGCRG" target="_blank"><div class="month-thumb">02</div><div class="month-name">February</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/16hcJU9FqqdTeAm5VVpcr8CxLZnpx0pu7" target="_blank"><div class="month-thumb">03</div><div class="month-name">March</div></a>
+        <a class="month-card" href="https://drive.google.com/drive/folders/1HmpnZG3bYJ_IP_2bmIRqNsgemg-MJaUd" target="_blank"><div class="month-thumb">04</div><div class="month-name">April</div></a>
+        <a class="month-card" href="https://drive.google
